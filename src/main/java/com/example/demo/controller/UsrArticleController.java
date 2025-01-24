@@ -35,6 +35,8 @@ public class UsrArticleController {
 			return id + "번 그런거없어";
 
 		}
+		
+		article = articleService.getArticleById(id);
 
 		return article;
 	}
@@ -50,8 +52,7 @@ public class UsrArticleController {
 
 		}
 
-		article.setTitle(title);
-		article.setBody(body);
+		articleService.doModify(id, title, body);
 
 		return article;
 	}
@@ -75,7 +76,8 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
 	public Article doAdd(String title, String body) {
-		Article article = articleService.writeArticle(title, body);
+		int id = articleService.writeArticle(title, body);
+		Article article = articleService.getArticleById(id);
 		return article;
 	}
 
