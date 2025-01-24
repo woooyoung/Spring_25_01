@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.service.ArticleService;
+import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
+import com.example.demo.vo.ResultData;
 
 @Controller
 public class UsrArticleController {
@@ -27,18 +29,17 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/getArticle")
 	@ResponseBody
-	public Object getArticle(int id) {
+	public ResultData getArticle(int id) {
 
 		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
-			return id + "번 그런거없어";
-
+			return ResultData.from("F-1", Ut.f("%d번 글은 없어", id));
 		}
-		
+
 		article = articleService.getArticleById(id);
 
-		return article;
+		return ResultData.from("S-1", Ut.f("%d번 게시글 작성", id), article);
 	}
 
 	@RequestMapping("/usr/article/doModify")
@@ -64,13 +65,12 @@ public class UsrArticleController {
 		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
-			return id + "번 그런거없어";
+			return Ut.f("%d번 글은 없어", id);
 		}
 
-//		articleService.deleteArticle(article);
 		articleService.deleteArticle(id);
 
-		return id + "번 글 삭제";
+		return Ut.f("%d번 글이 삭제됨", id);
 	}
 
 	@RequestMapping("/usr/article/doAdd")
